@@ -7,15 +7,24 @@ import { PostDeleteOutput } from './dto/post-delete.dto';
 import { PostPagination, PostPaginationArgs } from './dto/post-pagination.dto';
 import { PostUpdateInput, PostUpdateOutput } from './dto/post-update.dto';
 import { Post } from './entities/post.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(input: PostCreateInput): Promise<PostCreateOuput> {
+  async create(
+    authorId: User['id'],
+    input: PostCreateInput,
+  ): Promise<PostCreateOuput> {
+    const author = await this.userRepository.findOne(authorId);
+    if (!author) throw new NotFoundException();
+
     let post = this.postRepository.create(input);
+    post.author = author;
 
     post = await this.postRepository.save(post);
 

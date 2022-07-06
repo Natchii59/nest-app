@@ -13,12 +13,24 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  firstName: String
+  lastName: String
+  username: String!
+  bio: String
+}
+
 type Post {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   description: String
+  author: User
 }
 
 type PostGetOutput {
@@ -42,18 +54,24 @@ type PostUpdateOutput {
   post: Post!
 }
 
-type User {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  email: String!
-  firstName: String
-  lastName: String
-  username: String!
-  bio: String
+type UserGetOutput {
+  user: User!
 }
 
-type UserGetOutput {
+type UserPagination {
+  totalCount: Int!
+  nodes: [User!]!
+}
+
+type UserCreateOutput {
+  user: User!
+}
+
+type UserDeleteOutput {
+  id: ID
+}
+
+type UserUpdateOutput {
   user: User!
 }
 
@@ -61,6 +79,7 @@ type Query {
   getPostById(id: ID!): PostGetOutput!
   postPagination(skip: Int!, take: Int!, sortBy: PostPaginationSortBy, where: PostPaginationWhere): PostPagination!
   userGetById(id: ID!): UserGetOutput!
+  userPagination(skip: Int!, take: Int!, sortBy: UserPaginationSortBy, where: UserPaginationWhere): UserPagination!
 }
 
 input PostPaginationSortBy {
@@ -77,10 +96,26 @@ input PostPaginationWhere {
   title: String
 }
 
+input UserPaginationSortBy {
+  createdAt: SortDirection
+  username: SortDirection
+  firstName: SortDirection
+  lastName: SortDirection
+}
+
+input UserPaginationWhere {
+  username: String
+  firstName: String
+  lastName: String
+}
+
 type Mutation {
   createPost(input: PostCreateInput!): PostCreateOuput!
   updatePost(id: ID!, input: PostUpdateInput!): PostUpdateOutput!
   deletePost(id: ID!): PostDeleteOutput!
+  createUser(input: UserCreateInput!): UserCreateOutput!
+  updateUser(id: ID!, input: UserUpdateInput!): UserUpdateOutput!
+  deleteUser(id: ID!): UserDeleteOutput!
 }
 
 input PostCreateInput {
@@ -91,4 +126,20 @@ input PostCreateInput {
 input PostUpdateInput {
   title: String
   description: String
+}
+
+input UserCreateInput {
+  email: String!
+  firstName: String
+  lastName: String
+  username: String!
+  password: String!
+}
+
+input UserUpdateInput {
+  email: String
+  firstName: String
+  lastName: String
+  username: String
+  bio: String
 }

@@ -14,7 +14,10 @@ export class PostMutationsResolver {
   async createPost(
     @Args('input') input: PostCreateInput,
   ): Promise<PostCreateOuput> {
-    return await this.postService.create(input);
+    return await this.postService.create(
+      '4a7d067c-f75e-4815-9c00-3ce7f8e2a1e6',
+      input,
+    );
   }
 
   @Mutation(() => PostUpdateOutput)
