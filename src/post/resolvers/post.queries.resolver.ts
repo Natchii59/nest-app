@@ -1,9 +1,10 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { PostGetArgs, PostGetOutput } from '../dto/post-get.dto';
+import { Post } from '../entities/post.entity';
 import { PostService } from '../post.service';
 
-@Resolver()
+@Resolver(Post)
 export class PostQueriesResolver {
   constructor(@Inject(PostService) private readonly postService: PostService) {}
 

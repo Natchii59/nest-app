@@ -19,6 +19,34 @@ type PostGetOutput {
   post: Post!
 }
 
+type PostCreateOuput {
+  post: Post!
+}
+
+type PostDeleteOutput {
+  id: ID
+}
+
+type PostUpdateOutput {
+  post: Post!
+}
+
 type Query {
   getPostById(id: ID!): PostGetOutput!
+}
+
+type Mutation {
+  createPost(input: PostCreateInput!): PostCreateOuput!
+  updatePost(id: ID!, input: PostUpdateInput!): PostUpdateOutput!
+  deletePost(id: ID!): PostDeleteOutput!
+}
+
+input PostCreateInput {
+  title: String!
+  description: String
+}
+
+input PostUpdateInput {
+  title: String
+  description: String
 }

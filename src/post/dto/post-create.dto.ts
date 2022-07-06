@@ -1,11 +1,12 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Post } from '../entities/post.entity';
 
 @InputType()
 export class PostCreateInput {
   @Field(() => String)
   @IsString()
+  @IsNotEmpty()
   title: Post['title'];
 
   @Field(() => String, { nullable: true })
