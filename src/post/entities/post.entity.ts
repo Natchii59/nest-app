@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Node } from 'src/pagination/node.entity';
+import { Node } from '../../pagination/node.entity';
 import { Column, Entity } from 'typeorm';
 
 @Entity()

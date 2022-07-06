@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SortDirection } from 'src/pagination/pagination.dto';
+import { SortDirection } from '../pagination/pagination.dto';
 import { Repository } from 'typeorm';
 import { PostCreateInput, PostCreateOuput } from './dto/post-create.dto';
 import { PostDeleteOutput } from './dto/post-delete.dto';
