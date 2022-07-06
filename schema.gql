@@ -42,6 +42,12 @@ type PostPagination {
   nodes: [Post!]!
 }
 
+type JWTPayload {
+  id: ID!
+  email: String!
+  username: String!
+}
+
 type PostCreateOuput {
   post: Post!
 }
@@ -75,11 +81,16 @@ type UserUpdateOutput {
   user: User!
 }
 
+type AuthLoginOutput {
+  accessToken: String!
+}
+
 type Query {
   getPostById(id: ID!): PostGetOutput!
   postPagination(skip: Int!, take: Int!, sortBy: PostPaginationSortBy, where: PostPaginationWhere): PostPagination!
   userGetById(id: ID!): UserGetOutput!
   userPagination(skip: Int!, take: Int!, sortBy: UserPaginationSortBy, where: UserPaginationWhere): UserPagination!
+  getProfile: JWTPayload!
 }
 
 input PostPaginationSortBy {
@@ -116,6 +127,7 @@ type Mutation {
   createUser(input: UserCreateInput!): UserCreateOutput!
   updateUser(id: ID!, input: UserUpdateInput!): UserUpdateOutput!
   deleteUser(id: ID!): UserDeleteOutput!
+  authLogin(email: String!, password: String!): AuthLoginOutput!
 }
 
 input PostCreateInput {

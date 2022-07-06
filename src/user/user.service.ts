@@ -7,6 +7,7 @@ import { UserDeleteOutput } from './dto/user-delete.dto';
 import { UserPagination, UserPaginationArgs } from './dto/user-pagination.dto';
 import { UserUpdateInput, UserUpdateOutput } from './dto/user-update.dto';
 import { User } from './entities/user.entity';
+import { genSaltSync, hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,10 @@ export class UserService {
   ) {}
 
   async create(input: UserCreateInput): Promise<UserCreateOutput> {
-    let user = this.userRepository.create(input);
+    let user = this.userRepository.create({
+      ...input,
+      password: hashSync(input.password, genSaltSync()),
+    });
 
     user = await this.userRepository.save(user);
 
@@ -26,7 +30,7 @@ export class UserService {
     id: User['id'],
     input: UserUpdateInput,
   ): Promise<UserUpdateOutput> {
-    let user = await this.userRepository.findOne(id);
+    let user = await this.userRepository.findOne({ where: { id } });
 
     if (!user) throw new NotFoundException();
 
@@ -46,7 +50,11 @@ export class UserService {
   }
 
   async getById(id: User['id']): Promise<User> {
-    return await this.userRepository.findOne(id);
+    return await this.userRepository.findOne({ where: { id } });
+  }
+
+  async getByEmail(email: User['email']): Promise<User> {
+    return await this.userRepository.findOne({ where: { email } });
   }
 
   async pagination(args: UserPaginationArgs): Promise<UserPagination> {

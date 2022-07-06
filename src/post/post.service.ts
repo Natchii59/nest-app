@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SortDirection } from '../pagination/pagination.dto';
 import { Repository } from 'typeorm';
@@ -20,7 +24,9 @@ export class PostService {
     authorId: User['id'],
     input: PostCreateInput,
   ): Promise<PostCreateOuput> {
-    const author = await this.userRepository.findOne(authorId);
+    const author = await this.userRepository.findOne({
+      where: { id: authorId },
+    });
     if (!author) throw new NotFoundException();
 
     let post = this.postRepository.create(input);
@@ -33,11 +39,14 @@ export class PostService {
 
   async update(
     id: Post['id'],
+    userId: User['id'],
     input: PostUpdateInput,
   ): Promise<PostUpdateOutput> {
-    let post = await this.postRepository.findOne(id);
+    let post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) throw new NotFoundException();
+
+    if (post.authorId !== userId) throw new UnauthorizedException();
 
     post = await this.postRepository.save({
       ...post,
@@ -47,7 +56,11 @@ export class PostService {
     return { post };
   }
 
-  async delete(id: Post['id']): Promise<PostDeleteOutput> {
+  async delete(id: Post['id'], userId: User['id']): Promise<PostDeleteOutput> {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (post.authorId !== userId) throw new UnauthorizedException();
+
     const result = await this.postRepository.delete(id);
 
     if (result.affected > 0) return { id };
@@ -55,7 +68,7 @@ export class PostService {
   }
 
   async getById(id: Post['id']): Promise<Post> {
-    return await this.postRepository.findOne(id);
+    return await this.postRepository.findOne({ where: { id } });
   }
 
   async pagination(args: PostPaginationArgs): Promise<PostPagination> {
