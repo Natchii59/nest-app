@@ -1,6 +1,7 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { PostGetArgs, PostGetOutput } from '../dto/post-get.dto';
+import { PostPagination, PostPaginationArgs } from '../dto/post-pagination.dto';
 import { Post } from '../entities/post.entity';
 import { PostService } from '../post.service';
 
@@ -15,5 +16,12 @@ export class PostQueriesResolver {
     if (!post) throw new NotFoundException();
 
     return { post };
+  }
+
+  @Query(() => PostPagination)
+  async postPagination(
+    @Args() args: PostPaginationArgs,
+  ): Promise<PostPagination> {
+    return await this.postService.pagination(args);
   }
 }

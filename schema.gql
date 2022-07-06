@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+interface Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Post {
   id: ID!
   createdAt: DateTime!
@@ -10,13 +21,13 @@ type Post {
   description: String
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type PostGetOutput {
   post: Post!
+}
+
+type PostPagination {
+  totalCount: Int!
+  nodes: [Post!]!
 }
 
 type PostCreateOuput {
@@ -33,6 +44,21 @@ type PostUpdateOutput {
 
 type Query {
   getPostById(id: ID!): PostGetOutput!
+  postPagination(skip: Int!, take: Int!, sortBy: PostPaginationSortBy, where: PostPaginationWhere): PostPagination!
+}
+
+input PostPaginationSortBy {
+  createdAt: SortDirection
+  title: SortDirection
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input PostPaginationWhere {
+  title: String
 }
 
 type Mutation {
