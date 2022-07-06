@@ -42,9 +42,25 @@ type PostUpdateOutput {
   post: Post!
 }
 
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  firstName: String
+  lastName: String
+  username: String!
+  bio: String
+}
+
+type UserGetOutput {
+  user: User!
+}
+
 type Query {
   getPostById(id: ID!): PostGetOutput!
   postPagination(skip: Int!, take: Int!, sortBy: PostPaginationSortBy, where: PostPaginationWhere): PostPagination!
+  userGetById(id: ID!): UserGetOutput!
 }
 
 input PostPaginationSortBy {

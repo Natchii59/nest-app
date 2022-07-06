@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { PostModule } from './post/post.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PostModule } from './post/post.module';
       useGlobalPrefix: true,
     }),
     PostModule,
+    UserModule,
   ],
 })
 export class AppModule {}
