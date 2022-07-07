@@ -37,6 +37,7 @@ describe('AuthService', () => {
     service = module.get<AuthService>(AuthService);
     userService = module.get<UserService>(UserService);
     jwtService = module.get<JwtService>(JwtService);
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
