@@ -61,7 +61,7 @@ export class PostService {
   async delete(id: Post['id'], userId: User['id']): Promise<PostDeleteOutput> {
     const post = await this.postRepository.findOne({ where: { id } });
 
-    if (post.authorId !== userId) throw new UnauthorizedException();
+    if (!!post && post.authorId !== userId) throw new UnauthorizedException();
 
     const result = await this.postRepository.delete(id);
 
