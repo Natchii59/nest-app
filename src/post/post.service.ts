@@ -12,6 +12,7 @@ import { PostPagination, PostPaginationArgs } from './dto/post-pagination.dto';
 import { PostUpdateInput, PostUpdateOutput } from './dto/post-update.dto';
 import { Post } from './entities/post.entity';
 import { User } from 'src/user/entities/user.entity';
+import { PostLikeOutput } from './dto/post-like.dto';
 
 @Injectable()
 export class PostService {
@@ -100,5 +101,46 @@ export class PostService {
     const [nodes, totalCount] = await query.getManyAndCount();
 
     return { nodes, totalCount };
+  }
+
+  async like(userId: User['id'], postId: Post['id']): Promise<PostLikeOutput> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new NotFoundException('User Not Found');
+
+    let post = await this.postRepository.findOne({
+      where: { id: postId },
+      relations: ['likes'],
+    });
+
+    if (!post) throw new NotFoundException('Post Not Found');
+
+    post.likes.push(user);
+
+    post = await this.postRepository.save(post);
+
+    return { post };
+  }
+
+  async unlike(
+    userId: User['id'],
+    postId: Post['id'],
+  ): Promise<PostLikeOutput> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new NotFoundException('User Not Found');
+
+    let post = await this.postRepository.findOne({
+      where: { id: postId },
+      relations: ['likes'],
+    });
+
+    if (!post) throw new NotFoundException('Post Not Found');
+
+    post.likes = post.likes.filter((u) => u.id !== user.id);
+
+    post = await this.postRepository.save(post);
+
+    return { post };
   }
 }

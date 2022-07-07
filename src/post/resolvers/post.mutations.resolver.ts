@@ -4,6 +4,7 @@ import { JWTPayload } from 'src/auth/dto/jwt-payload.dto';
 import { CurrentUser, JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PostCreateInput, PostCreateOuput } from '../dto/post-create.dto';
 import { PostDeleteArgs, PostDeleteOutput } from '../dto/post-delete.dto';
+import { PostLikeArgs, PostLikeOutput } from '../dto/post-like.dto';
 import { PostUpdateArgs, PostUpdateOutput } from '../dto/post-update.dto';
 import { Post } from '../entities/post.entity';
 import { PostService } from '../post.service';
@@ -37,5 +38,23 @@ export class PostMutationsResolver {
     @Args() args: PostDeleteArgs,
   ): Promise<PostDeleteOutput> {
     return await this.postService.delete(args.id, user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => PostLikeOutput)
+  async likePost(
+    @CurrentUser() user: JWTPayload,
+    @Args() args: PostLikeArgs,
+  ): Promise<PostLikeOutput> {
+    return await this.postService.like(user.id, args.postId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => PostLikeOutput)
+  async unlikePost(
+    @CurrentUser() user: JWTPayload,
+    @Args() args: PostLikeArgs,
+  ): Promise<PostLikeOutput> {
+    return await this.postService.unlike(user.id, args.postId);
   }
 }

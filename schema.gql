@@ -31,6 +31,7 @@ type Post {
   title: String!
   description: String
   author: User
+  likes: Float!
 }
 
 type PostGetOutput {
@@ -54,6 +55,10 @@ type PostCreateOuput {
 
 type PostDeleteOutput {
   id: ID
+}
+
+type PostLikeOutput {
+  post: Post!
 }
 
 type PostUpdateOutput {
@@ -124,9 +129,11 @@ type Mutation {
   createPost(input: PostCreateInput!): PostCreateOuput!
   updatePost(id: ID!, input: PostUpdateInput!): PostUpdateOutput!
   deletePost(id: ID!): PostDeleteOutput!
+  likePost(postId: ID!): PostLikeOutput!
+  unlikePost(postId: ID!): PostLikeOutput!
   createUser(input: UserCreateInput!): UserCreateOutput!
-  updateUser(id: ID!, input: UserUpdateInput!): UserUpdateOutput!
-  deleteUser(id: ID!): UserDeleteOutput!
+  updateUser(input: UserUpdateInput!): UserUpdateOutput!
+  deleteUser: UserDeleteOutput!
   authLogin(email: String!, password: String!): AuthLoginOutput!
 }
 

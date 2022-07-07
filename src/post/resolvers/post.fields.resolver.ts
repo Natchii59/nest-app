@@ -18,4 +18,9 @@ export class PostFieldsResolver {
       return null;
     }
   }
+
+  @ResolveField(() => Number)
+  likes(@Parent() post: Post): number {
+    return post.likesIds.length;
+  }
 }

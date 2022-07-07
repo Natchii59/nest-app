@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Node } from '../../pagination/node.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { Post } from '../../post/entities/post.entity';
 
 @Entity()
@@ -31,4 +31,7 @@ export class User extends Node {
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
+
+  @ManyToMany(() => Post, (post) => post.likes)
+  likedPosts: Post[];
 }

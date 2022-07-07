@@ -12,6 +12,7 @@ export const userMock: User = {
   lastName: null,
   bio: null,
   posts: [],
+  likedPosts: [],
 };
 
 export const jwtPayloadMock: JWTPayload = {

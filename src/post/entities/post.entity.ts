@@ -1,6 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Node } from '../../pagination/node.entity';
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  RelationId,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 
 @Entity()
@@ -22,4 +30,13 @@ export class Post extends Node {
 
   @RelationId((post: Post) => post.author)
   readonly authorId: User['id'];
+
+  @ManyToMany(() => User, (user) => user.likedPosts, {
+    onDelete: 'CASCADE',
+  })
+  @JoinTable()
+  likes: User[];
+
+  @RelationId((post: Post) => post.likes)
+  readonly likesIds: User['id'][];
 }
