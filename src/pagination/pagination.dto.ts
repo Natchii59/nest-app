@@ -7,6 +7,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { IsInt, IsNotEmpty } from 'class-validator';
+
 import { Node } from './node.entity';
 
 export enum SortDirection {

@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Node } from '../../pagination/node.entity';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
+
+import { Node } from '../../pagination/node.entity';
 import { Post } from '../../post/entities/post.entity';
 
 @Entity()

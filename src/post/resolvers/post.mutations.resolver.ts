@@ -1,13 +1,14 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { JWTPayload } from 'src/auth/dto/jwt-payload.dto';
-import { CurrentUser, JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+
+import { PostService } from '../post.service';
+import { Post } from '../entities/post.entity';
 import { PostCreateInput, PostCreateOuput } from '../dto/post-create.dto';
 import { PostDeleteArgs, PostDeleteOutput } from '../dto/post-delete.dto';
 import { PostLikeArgs, PostLikeOutput } from '../dto/post-like.dto';
 import { PostUpdateArgs, PostUpdateOutput } from '../dto/post-update.dto';
-import { Post } from '../entities/post.entity';
-import { PostService } from '../post.service';
+import { JWTPayload } from '../../auth/dto/jwt-payload.dto';
+import { CurrentUser, JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
 @Resolver(Post)
 export class PostMutationsResolver {

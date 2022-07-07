@@ -1,11 +1,12 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from 'src/user/entities/user.entity';
+
 import { AuthService } from './auth.service';
-import { AuthLoginArgs, AuthLoginOutput } from './dto/auth-login.dto';
 import { JWTPayload } from './dto/jwt-payload.dto';
-import { CurrentUser, JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AuthLoginArgs, AuthLoginOutput } from './dto/auth-login.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { CurrentUser, JwtAuthGuard } from './guards/jwt-auth.guard';
+import { User } from '../user/entities/user.entity';
 
 @Resolver('auth')
 export class AuthResolver {

@@ -1,13 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SortDirection } from '../pagination/pagination.dto';
 import { Repository } from 'typeorm';
+import { genSaltSync, hashSync } from 'bcrypt';
+
+import { User } from './entities/user.entity';
 import { UserCreateInput, UserCreateOutput } from './dto/user-create.dto';
+import { UserUpdateInput, UserUpdateOutput } from './dto/user-update.dto';
 import { UserDeleteOutput } from './dto/user-delete.dto';
 import { UserPagination, UserPaginationArgs } from './dto/user-pagination.dto';
-import { UserUpdateInput, UserUpdateOutput } from './dto/user-update.dto';
-import { User } from './entities/user.entity';
-import { genSaltSync, hashSync } from 'bcrypt';
+import { SortDirection } from '../pagination/pagination.dto';
 
 @Injectable()
 export class UserService {

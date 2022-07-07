@@ -1,5 +1,6 @@
 import { ArgsType, Field, ID, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty, IsUUID } from 'class-validator';
+
 import { Post } from '../entities/post.entity';
 
 @ArgsType()

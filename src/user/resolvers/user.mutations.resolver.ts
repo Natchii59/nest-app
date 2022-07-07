@@ -1,12 +1,13 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { JWTPayload } from '../../auth/dto/jwt-payload.dto';
-import { CurrentUser, JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { UserCreateInput, UserCreateOutput } from '../dto/user-create.dto';
-import { UserDeleteOutput } from '../dto/user-delete.dto';
-import { UserUpdateInput, UserUpdateOutput } from '../dto/user-update.dto';
-import { User } from '../entities/user.entity';
+
 import { UserService } from '../user.service';
+import { User } from '../entities/user.entity';
+import { UserCreateInput, UserCreateOutput } from '../dto/user-create.dto';
+import { UserUpdateInput, UserUpdateOutput } from '../dto/user-update.dto';
+import { UserDeleteOutput } from '../dto/user-delete.dto';
+import { CurrentUser, JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { JWTPayload } from '../../auth/dto/jwt-payload.dto';
 
 @Resolver(User)
 export class UserMutationsResolver {

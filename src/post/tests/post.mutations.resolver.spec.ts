@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { PostMutationsResolver } from '../resolvers/post.mutations.resolver';
 
 describe('PostMutationsResolver', () => {

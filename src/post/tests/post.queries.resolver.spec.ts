@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { PostQueriesResolver } from '../resolvers/post.queries.resolver';
 
 describe('PostQueriesResolver', () => {

@@ -1,10 +1,11 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { userMock } from '../../../test/mocks/user.mock';
+
+import { UserService } from '../user.service';
+import { UserQueriesResolver } from '../resolvers/user.queries.resolver';
 import { UserGetArgs } from '../dto/user-get.dto';
 import { UserPaginationArgs } from '../dto/user-pagination.dto';
-import { UserQueriesResolver } from '../resolvers/user.queries.resolver';
-import { UserService } from '../user.service';
+import { userMock } from '../../../test/mocks/user.mock';
 
 describe('UserQueriesResolver', () => {
   let resolver: UserQueriesResolver;

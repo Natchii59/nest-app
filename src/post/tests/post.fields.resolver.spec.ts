@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { PostFieldsResolver } from '../resolvers/post.fields.resolver';
 
 describe('PostFieldsResolver', () => {

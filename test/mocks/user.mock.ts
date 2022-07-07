@@ -1,5 +1,5 @@
-import { JWTPayload } from 'src/auth/dto/jwt-payload.dto';
-import { User } from 'src/user/entities/user.entity';
+import { JWTPayload } from '../../src/auth/dto/jwt-payload.dto';
+import { User } from '../../src/user/entities/user.entity';
 
 export const userMock: User = {
   id: 'USERID',

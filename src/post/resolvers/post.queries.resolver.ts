@@ -1,9 +1,10 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
+
+import { PostService } from '../post.service';
+import { Post } from '../entities/post.entity';
 import { PostGetArgs, PostGetOutput } from '../dto/post-get.dto';
 import { PostPagination, PostPaginationArgs } from '../dto/post-pagination.dto';
-import { Post } from '../entities/post.entity';
-import { PostService } from '../post.service';
 
 @Resolver(Post)
 export class PostQueriesResolver {

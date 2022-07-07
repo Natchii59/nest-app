@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { userMock } from '../../../test/mocks/user.mock';
-import { Repository } from 'typeorm';
-import { UserCreateInput } from '../dto/user-create.dto';
-import { User } from '../entities/user.entity';
-import { UserService } from '../user.service';
-import * as bcrypt from 'bcrypt';
-import { UserUpdateInput } from '../dto/user-update.dto';
 import { NotFoundException } from '@nestjs/common';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+
+import { UserService } from '../user.service';
+import { User } from '../entities/user.entity';
+import { UserCreateInput } from '../dto/user-create.dto';
+import { UserUpdateInput } from '../dto/user-update.dto';
 import { UserPaginationArgs } from '../dto/user-pagination.dto';
 import { SortDirection } from '../../pagination/pagination.dto';
+import { userMock } from '../../../test/mocks/user.mock';
 
 describe('UserService', () => {
   let service: UserService;

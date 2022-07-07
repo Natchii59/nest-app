@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserQueriesResolver } from './resolvers/user.queries.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { UserService } from './user.service';
 import { User } from './entities/user.entity';
+import { UserQueriesResolver } from './resolvers/user.queries.resolver';
 import { UserMutationsResolver } from './resolvers/user.mutations.resolver';
 
 @Module({

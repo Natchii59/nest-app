@@ -1,9 +1,10 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
+
+import { UserService } from '../user.service';
+import { User } from '../entities/user.entity';
 import { UserGetArgs, UserGetOutput } from '../dto/user-get.dto';
 import { UserPagination, UserPaginationArgs } from '../dto/user-pagination.dto';
-import { User } from '../entities/user.entity';
-import { UserService } from '../user.service';
 
 @Resolver(User)
 export class UserQueriesResolver {

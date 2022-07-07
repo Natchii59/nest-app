@@ -1,8 +1,9 @@
 import { Inject } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { UserService } from 'src/user/user.service';
-import { User } from '../../user/entities/user.entity';
+
 import { Post } from '../entities/post.entity';
+import { UserService } from '../../user/user.service';
+import { User } from '../../user/entities/user.entity';
 
 @Resolver(Post)
 export class PostFieldsResolver {

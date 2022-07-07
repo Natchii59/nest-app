@@ -7,6 +7,7 @@ import {
   IsString,
   ValidateIf,
 } from 'class-validator';
+
 import { User } from '../entities/user.entity';
 
 @InputType()

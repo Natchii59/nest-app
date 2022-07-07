@@ -43,12 +43,6 @@ type PostPagination {
   nodes: [Post!]!
 }
 
-type JWTPayload {
-  id: ID!
-  email: String!
-  username: String!
-}
-
 type PostCreateOuput {
   post: Post!
 }
@@ -65,6 +59,12 @@ type PostUpdateOutput {
   post: Post!
 }
 
+type JWTPayload {
+  id: ID!
+  email: String!
+  username: String!
+}
+
 type UserGetOutput {
   user: User!
 }
@@ -78,12 +78,12 @@ type UserCreateOutput {
   user: User!
 }
 
-type UserDeleteOutput {
-  id: ID
-}
-
 type UserUpdateOutput {
   user: User!
+}
+
+type UserDeleteOutput {
+  id: ID
 }
 
 type AuthLoginOutput {

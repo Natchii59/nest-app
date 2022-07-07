@@ -1,11 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { jwtPayloadMock, userMock } from '../../../test/mocks/user.mock';
+
+import { UserService } from '../user.service';
+import { UserMutationsResolver } from '../resolvers/user.mutations.resolver';
 import { UserCreateInput } from '../dto/user-create.dto';
 import { UserUpdateInput } from '../dto/user-update.dto';
-import { UserMutationsResolver } from '../resolvers/user.mutations.resolver';
-import { UserService } from '../user.service';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { jwtPayloadMock, userMock } from '../../../test/mocks/user.mock';
 
 describe('UserMutationsResolver', () => {
   let resolver: UserMutationsResolver;
