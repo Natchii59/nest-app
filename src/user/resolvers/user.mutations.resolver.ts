@@ -1,8 +1,10 @@
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { JWTPayload } from '../../auth/dto/jwt-payload.dto';
+import { CurrentUser, JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UserCreateInput, UserCreateOutput } from '../dto/user-create.dto';
-import { UserDeleteArgs, UserDeleteOutput } from '../dto/user-delete.dto';
-import { UserUpdateArgs, UserUpdateOutput } from '../dto/user-update.dto';
+import { UserDeleteOutput } from '../dto/user-delete.dto';
+import { UserUpdateInput, UserUpdateOutput } from '../dto/user-update.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../user.service';
 
@@ -17,13 +19,18 @@ export class UserMutationsResolver {
     return await this.userService.create(input);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => UserUpdateOutput)
-  async updateUser(@Args() args: UserUpdateArgs): Promise<UserUpdateOutput> {
-    return await this.userService.update(args.id, args.input);
+  async updateUser(
+    @CurrentUser() user: JWTPayload,
+    @Args('input') input: UserUpdateInput,
+  ): Promise<UserUpdateOutput> {
+    return await this.userService.update(user.id, input);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => UserDeleteOutput)
-  async deleteUser(@Args() args: UserDeleteArgs): Promise<UserDeleteOutput> {
-    return await this.userService.delete(args.id);
+  async deleteUser(@CurrentUser() user: JWTPayload): Promise<UserDeleteOutput> {
+    return await this.userService.delete(user.id);
   }
 }

@@ -1,14 +1,11 @@
-import { ArgsType, Field, ID, InputType, ObjectType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import {
   IsAlpha,
   IsAlphanumeric,
   IsEmail,
   IsOptional,
   IsString,
-  IsUUID,
   ValidateIf,
-  ValidateNested,
 } from 'class-validator';
 import { User } from '../entities/user.entity';
 
@@ -38,18 +35,6 @@ export class UserUpdateInput {
   @IsString()
   @IsOptional()
   bio?: User['bio'];
-}
-
-@ArgsType()
-export class UserUpdateArgs {
-  @Field(() => ID)
-  @IsUUID()
-  id: User['id'];
-
-  @Field(() => UserUpdateInput)
-  @Type(() => UserUpdateInput)
-  @ValidateNested()
-  input: UserUpdateInput;
 }
 
 @ObjectType()
