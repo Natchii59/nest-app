@@ -90,8 +90,8 @@ describe('CommentMutationsResolver', () => {
 
       try {
         await resolver.createComment(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentServiceMock.create).toBeCalledWith(
@@ -148,8 +148,8 @@ describe('CommentMutationsResolver', () => {
 
       try {
         await resolver.updateComment(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentServiceMock.update).toBeCalledWith(
@@ -173,8 +173,8 @@ describe('CommentMutationsResolver', () => {
 
       try {
         await resolver.updateComment(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(commentServiceMock.update).toBeCalledWith(
@@ -239,8 +239,8 @@ describe('CommentMutationsResolver', () => {
 
       try {
         await resolver.deleteComment(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(commentServiceMock.delete).toBeCalledWith(
@@ -291,8 +291,8 @@ describe('CommentMutationsResolver', () => {
 
       try {
         await resolver.likeComment(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentServiceMock.like).toBeCalledWith(
@@ -339,8 +339,8 @@ describe('CommentMutationsResolver', () => {
 
       try {
         await resolver.unlikeComment(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentServiceMock.unlike).toBeCalledWith(

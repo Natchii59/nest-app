@@ -56,8 +56,8 @@ describe('CommentQueriesResolver', () => {
 
       try {
         await resolver.getCommentById(args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentServiceMock.getById).toBeCalledWith(args.id);

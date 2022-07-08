@@ -87,8 +87,8 @@ describe('UserMutationsResolver', () => {
 
       try {
         await resolver.updateUser(jwtPayloadMock, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userServiceMock.update).toBeCalledWith(jwtPayloadMock.id, input);

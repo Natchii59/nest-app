@@ -118,8 +118,8 @@ describe('CommentService', () => {
 
       try {
         await service.create(postId, authorId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postRepositoryMock.findOne).toBeCalledWith({
@@ -138,8 +138,8 @@ describe('CommentService', () => {
 
       try {
         await service.create(postId, authorId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postRepositoryMock.findOne).toBeCalledWith({
@@ -186,8 +186,8 @@ describe('CommentService', () => {
 
       try {
         await service.update(commentId, userId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentRepositoryMock.findOne).toBeCalledWith({
@@ -204,8 +204,8 @@ describe('CommentService', () => {
 
       try {
         await service.update(commentId, userId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(commentRepositoryMock.findOne).toBeCalledWith({
@@ -256,8 +256,8 @@ describe('CommentService', () => {
 
       try {
         await service.delete(commentId, userId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(commentRepositoryMock.findOne).toBeCalledWith({
@@ -322,8 +322,8 @@ describe('CommentService', () => {
 
       try {
         await service.like(commentId, userId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentRepositoryMock.findOne).toBeCalledWith({
@@ -340,8 +340,8 @@ describe('CommentService', () => {
 
       try {
         await service.like(commentId, userId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentRepositoryMock.findOne).toBeCalledWith({
@@ -405,8 +405,8 @@ describe('CommentService', () => {
 
       try {
         await service.unlike(commentId, userId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(commentRepositoryMock.findOne).toBeCalledWith({

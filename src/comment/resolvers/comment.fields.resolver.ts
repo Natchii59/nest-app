@@ -20,7 +20,7 @@ export class CommentFieldsResolver {
 
     try {
       return await this.userService.getById(comment.authorId);
-    } catch (e) {
+    } catch (err) {
       return null;
     }
   }
@@ -31,7 +31,7 @@ export class CommentFieldsResolver {
 
     try {
       return await this.postService.getById(comment.postId);
-    } catch (e) {
+    } catch (err) {
       return null;
     }
   }

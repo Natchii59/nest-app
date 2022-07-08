@@ -82,8 +82,8 @@ describe('PostMutationsResolver', () => {
 
       try {
         await resolver.createPost(jwtPayloadMock, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postServiceMock.create).toBeCalledWith(jwtPayloadMock.id, input);
@@ -136,8 +136,8 @@ describe('PostMutationsResolver', () => {
 
       try {
         await resolver.updatePost(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postServiceMock.update).toBeCalledWith(
@@ -161,8 +161,8 @@ describe('PostMutationsResolver', () => {
 
       try {
         await resolver.updatePost(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(postServiceMock.update).toBeCalledWith(
@@ -206,8 +206,8 @@ describe('PostMutationsResolver', () => {
 
       try {
         await resolver.deletePost(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(postServiceMock.delete).toBeCalledWith(args.id, jwtPayloadMock.id);
@@ -269,8 +269,8 @@ describe('PostMutationsResolver', () => {
 
       try {
         await resolver.likePost(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postServiceMock.like).toBeCalledWith(
@@ -316,8 +316,8 @@ describe('PostMutationsResolver', () => {
 
       try {
         await resolver.unlikePost(jwtPayloadMock, args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postServiceMock.unlike).toBeCalledWith(

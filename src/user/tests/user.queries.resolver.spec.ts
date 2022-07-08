@@ -61,8 +61,8 @@ describe('UserQueriesResolver', () => {
 
       try {
         await resolver.userGetById(args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userServiceMock.getById).toBeCalledWith(args.id);

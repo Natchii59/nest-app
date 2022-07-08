@@ -62,8 +62,8 @@ describe('PostQueriesResolver', () => {
 
       try {
         await resolver.getPostById(args);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postServiceMock.getById).toBeCalledWith(args.id);

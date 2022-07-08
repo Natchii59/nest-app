@@ -15,7 +15,7 @@ export class PostFieldsResolver {
 
     try {
       return await this.userService.getById(post.authorId);
-    } catch (e) {
+    } catch (err) {
       return null;
     }
   }

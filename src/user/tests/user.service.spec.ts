@@ -116,8 +116,8 @@ describe('UserService', () => {
 
       try {
         await service.update(id, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userRepositoryMock.findOne).toBeCalledWith({

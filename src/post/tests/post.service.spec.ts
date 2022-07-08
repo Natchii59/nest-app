@@ -105,8 +105,8 @@ describe('PostService', () => {
 
       try {
         await service.create(authorId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userRepositoryMock.findOne).toBeCalledWith({
@@ -150,8 +150,8 @@ describe('PostService', () => {
 
       try {
         await service.update(id, userId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(postRepositoryMock.findOne).toBeCalledWith({
@@ -168,8 +168,8 @@ describe('PostService', () => {
 
       try {
         await service.update(id, userId, input);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(postRepositoryMock.findOne).toBeCalledWith({
@@ -219,8 +219,8 @@ describe('PostService', () => {
 
       try {
         await service.delete(id, userId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(UnauthorizedException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(UnauthorizedException);
       }
 
       expect(postRepositoryMock.findOne).toBeCalledWith({ where: { id } });
@@ -313,8 +313,8 @@ describe('PostService', () => {
 
       try {
         await service.like(userId, postId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userRepositoryMock.findOne).toBeCalledWith({
@@ -330,8 +330,8 @@ describe('PostService', () => {
 
       try {
         await service.like(userId, postId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userRepositoryMock.findOne).toBeCalledWith({
@@ -388,8 +388,8 @@ describe('PostService', () => {
 
       try {
         await service.unlike(userId, postId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userRepositoryMock.findOne).toBeCalledWith({
@@ -405,8 +405,8 @@ describe('PostService', () => {
 
       try {
         await service.unlike(userId, postId);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (err) {
+        expect(err).toBeInstanceOf(NotFoundException);
       }
 
       expect(userRepositoryMock.findOne).toBeCalledWith({
