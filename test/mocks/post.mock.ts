@@ -10,4 +10,5 @@ export const postMock: Post = {
   authorId: 'USERID',
   likes: null,
   likesIds: [],
+  comments: [],
 };

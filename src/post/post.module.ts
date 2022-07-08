@@ -17,5 +17,6 @@ import { User } from '../user/entities/user.entity';
     PostMutationsResolver,
     PostFieldsResolver,
   ],
+  exports: [PostService],
 })
 export class PostModule {}

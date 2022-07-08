@@ -3,6 +3,7 @@ import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 import { Node } from '../../pagination/node.entity';
 import { Post } from '../../post/entities/post.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 @Entity()
 @ObjectType()
@@ -33,6 +34,12 @@ export class User extends Node {
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
 
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
+
   @ManyToMany(() => Post, (post) => post.likes)
   likedPosts: Post[];
+
+  @ManyToMany(() => Comment, (comment) => comment.likes)
+  likedComments: Comment[];
 }

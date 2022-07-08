@@ -13,6 +13,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Comment {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  text: String!
+  author: User
+  post: Post
+}
+
 type User {
   id: ID!
   createdAt: DateTime!
@@ -90,12 +99,33 @@ type AuthLoginOutput {
   accessToken: String!
 }
 
+type CommentCreateOutput {
+  comment: Comment!
+}
+
+type CommentUpdateOutput {
+  comment: Comment!
+}
+
+type CommentDeleteOutput {
+  id: ID
+}
+
+type CommentLikeOutput {
+  comment: Comment!
+}
+
+type CommentGetOutput {
+  comment: Comment!
+}
+
 type Query {
   getPostById(id: ID!): PostGetOutput!
   postPagination(skip: Int!, take: Int!, sortBy: PostPaginationSortBy, where: PostPaginationWhere): PostPagination!
   userGetById(id: ID!): UserGetOutput!
   userPagination(skip: Int!, take: Int!, sortBy: UserPaginationSortBy, where: UserPaginationWhere): UserPagination!
   getProfile: JWTPayload!
+  getCommentById(id: ID!): CommentGetOutput!
 }
 
 input PostPaginationSortBy {
@@ -135,6 +165,11 @@ type Mutation {
   updateUser(input: UserUpdateInput!): UserUpdateOutput!
   deleteUser: UserDeleteOutput!
   authLogin(email: String!, password: String!): AuthLoginOutput!
+  createComment(postId: ID!, input: CommentCreateInput!): CommentCreateOutput!
+  updateComment(commentId: ID!, input: CommentUpdateInput!): CommentUpdateOutput!
+  deleteComment(commentId: ID!): CommentDeleteOutput!
+  likeComment(commentId: ID!): CommentLikeOutput!
+  unlikeComment(commentId: ID!): CommentLikeOutput!
 }
 
 input PostCreateInput {
@@ -161,4 +196,12 @@ input UserUpdateInput {
   lastName: String
   username: String
   bio: String
+}
+
+input CommentCreateInput {
+  text: String!
+}
+
+input CommentUpdateInput {
+  text: String!
 }

@@ -6,11 +6,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   RelationId,
 } from 'typeorm';
 
 import { Node } from '../../pagination/node.entity';
 import { User } from '../../user/entities/user.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 @Entity()
 @ObjectType()
@@ -40,4 +42,7 @@ export class Post extends Node {
 
   @RelationId((post: Post) => post.likes)
   readonly likesIds: User['id'][];
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }
