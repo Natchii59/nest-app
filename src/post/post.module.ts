@@ -8,9 +8,10 @@ import { PostMutationsResolver } from './resolvers/post.mutations.resolver';
 import { PostFieldsResolver } from './resolvers/post.fields.resolver';
 import { UserModule } from '../user/user.module';
 import { User } from '../user/entities/user.entity';
+import { CommentModule } from 'src/comment/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, User]), UserModule],
+  imports: [TypeOrmModule.forFeature([Post, User]), UserModule, CommentModule],
   providers: [
     PostService,
     PostQueriesResolver,

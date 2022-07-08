@@ -7,8 +7,10 @@ import { CommentService } from '../comment.service';
 import { Comment } from '../entities/comment.entity';
 import { CommentCreateInput } from '../dto/comment-create.dto';
 import { CommentUpdateInput } from '../dto/comment-update.dto';
+import { CommentPaginationArgs } from '../dto/comment-pagination.dto';
 import { Post } from '../../post/entities/post.entity';
 import { User } from '../../user/entities/user.entity';
+import { SortDirection } from '../../pagination/pagination.dto';
 import { commentMock } from '../../../test/mocks/comment.mock';
 import { postMock } from '../../../test/mocks/post.mock';
 import { userMock } from '../../../test/mocks/user.mock';
@@ -31,6 +33,7 @@ describe('CommentService', () => {
       affected: 1,
       raw: {},
     })),
+    findAndCount: jest.fn(() => [[commentMock], 1]),
   };
 
   const postRepositoryMock = {
@@ -412,6 +415,34 @@ describe('CommentService', () => {
       expect(commentRepositoryMock.findOne).toBeCalledWith({
         where: { id: commentId },
         relations: ['likes'],
+      });
+    });
+  });
+
+  describe('Comment Pagination', () => {
+    it('should return pagiantion of comments', async () => {
+      const args: CommentPaginationArgs = {
+        skip: 0,
+        take: 10,
+        sortBy: {
+          createdAt: SortDirection.ASC,
+        },
+      };
+
+      const result = await service.pagination(args);
+
+      expect(commentRepositoryMock.findAndCount).toBeCalledWith({
+        skip: args.skip,
+        take: args.take,
+        order: {
+          createdAt: 'ASC',
+        },
+      });
+
+      expect(result.totalCount).toEqual(expect.any(Number));
+      expect(result).toEqual({
+        nodes: [commentMock],
+        totalCount: 1,
       });
     });
   });

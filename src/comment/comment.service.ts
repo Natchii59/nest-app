@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
 
 import { Comment } from './entities/comment.entity';
 import {
@@ -17,8 +17,13 @@ import {
 } from './dto/comment-update.dto';
 import { CommentDeleteOutput } from './dto/comment-delete.dto';
 import { CommentLikeOutput } from './dto/comment-like.dto';
+import {
+  CommentPagination,
+  CommentPaginationArgs,
+} from './dto/comment-pagination.dto';
 import { Post } from '../post/entities/post.entity';
 import { User } from '../user/entities/user.entity';
+import { SortDirection } from '../pagination/pagination.dto';
 
 @Injectable()
 export class CommentService {
@@ -138,5 +143,46 @@ export class CommentService {
     comment = await this.commentRepository.save(comment);
 
     return { comment };
+  }
+
+  async pagination(args: CommentPaginationArgs): Promise<CommentPagination> {
+    const options: FindManyOptions<Comment> = {
+      skip: args.skip,
+      take: args.take,
+    };
+
+    if (args.where) {
+      options.where = {
+        text:
+          args.where.text !== undefined
+            ? ILike(`%${args.where.text.split('').join('%')}%`)
+            : null,
+
+        author: {
+          id: args.where.authorId !== undefined ? args.where.authorId : null,
+        },
+
+        post: {
+          id: args.where.postId !== undefined ? args.where.postId : null,
+        },
+      };
+    }
+
+    if (args.sortBy) {
+      options.order = {
+        createdAt:
+          args.sortBy.createdAt !== undefined
+            ? args.sortBy.createdAt === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+      };
+    }
+
+    const [nodes, totalCount] = await this.commentRepository.findAndCount(
+      options,
+    );
+
+    return { nodes, totalCount };
   }
 }

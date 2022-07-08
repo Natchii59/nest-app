@@ -2,15 +2,26 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { PostFieldsResolver } from '../resolvers/post.fields.resolver';
 import { UserService } from '../../user/user.service';
+import { CommentService } from '../../comment/comment.service';
+import { CommentPaginationArgs } from '../../comment/dto/comment-pagination.dto';
 import { postMock } from '../../../test/mocks/post.mock';
 import { userMock } from '../../../test/mocks/user.mock';
+import { commentMock } from '../../../test/mocks/comment.mock';
 
 describe('PostFieldsResolver', () => {
   let resolver: PostFieldsResolver;
   let userService: UserService;
+  let commentService: CommentService;
 
   const userServiceMock = {
     getById: jest.fn(() => userMock),
+  };
+
+  const commentServiceMock = {
+    pagination: jest.fn(() => ({
+      totalCount: 1,
+      nodes: [commentMock],
+    })),
   };
 
   beforeEach(async () => {
@@ -21,17 +32,23 @@ describe('PostFieldsResolver', () => {
           provide: UserService,
           useValue: userServiceMock,
         },
+        {
+          provide: CommentService,
+          useValue: commentServiceMock,
+        },
       ],
     }).compile();
 
     resolver = module.get<PostFieldsResolver>(PostFieldsResolver);
     userService = module.get<UserService>(UserService);
+    commentService = module.get<CommentService>(CommentService);
     jest.clearAllMocks();
   });
 
   it('should be defined', () => {
     expect(resolver).toBeDefined();
     expect(userService).toBeDefined();
+    expect(commentService).toBeDefined();
   });
 
   describe('Author of Post', () => {
@@ -68,6 +85,30 @@ describe('PostFieldsResolver', () => {
 
       expect(result).toEqual(expect.any(Number));
       expect(result === postMock.likesIds.length).toEqual(true);
+    });
+  });
+
+  describe('Comments Pagination of Post', () => {
+    it('should return comments pagination of post', async () => {
+      const args: CommentPaginationArgs = {
+        skip: 0,
+        take: 10,
+      };
+
+      const result = await resolver.commentsPagination(postMock, args);
+
+      expect(commentServiceMock.pagination).toBeCalledWith({
+        ...args,
+        where: {
+          postId: postMock.id,
+        },
+      });
+
+      expect(result.totalCount).toEqual(expect.any(Number));
+      expect(result).toEqual({
+        totalCount: 1,
+        nodes: [commentMock],
+      });
     });
   });
 });

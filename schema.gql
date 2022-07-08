@@ -41,6 +41,22 @@ type Post {
   description: String
   author: User
   likes: Float!
+  commentsPagination(skip: Int!, take: Int!, sortBy: PaginationSortBy, where: CommentPaginationWhere): CommentPagination!
+}
+
+input PaginationSortBy {
+  createdAt: SortDirection
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input CommentPaginationWhere {
+  text: String
+  authorId: ID
+  postId: ID
 }
 
 type PostGetOutput {
@@ -74,6 +90,11 @@ type JWTPayload {
   username: String!
 }
 
+type CommentPagination {
+  totalCount: Int!
+  nodes: [Comment!]!
+}
+
 type UserGetOutput {
   user: User!
 }
@@ -93,10 +114,6 @@ type UserUpdateOutput {
 
 type UserDeleteOutput {
   id: ID
-}
-
-type AuthLoginOutput {
-  accessToken: String!
 }
 
 type CommentCreateOutput {
@@ -119,23 +136,23 @@ type CommentGetOutput {
   comment: Comment!
 }
 
+type AuthLoginOutput {
+  accessToken: String!
+}
+
 type Query {
   getPostById(id: ID!): PostGetOutput!
   postPagination(skip: Int!, take: Int!, sortBy: PostPaginationSortBy, where: PostPaginationWhere): PostPagination!
   userGetById(id: ID!): UserGetOutput!
   userPagination(skip: Int!, take: Int!, sortBy: UserPaginationSortBy, where: UserPaginationWhere): UserPagination!
-  getProfile: JWTPayload!
   getCommentById(id: ID!): CommentGetOutput!
+  commentPagination(skip: Int!, take: Int!, sortBy: PaginationSortBy, where: CommentPaginationWhere): CommentPagination!
+  getProfile: JWTPayload!
 }
 
 input PostPaginationSortBy {
   createdAt: SortDirection
   title: SortDirection
-}
-
-enum SortDirection {
-  ASC
-  DESC
 }
 
 input PostPaginationWhere {
@@ -166,12 +183,12 @@ type Mutation {
   createUser(input: UserCreateInput!): UserCreateOutput!
   updateUser(input: UserUpdateInput!): UserUpdateOutput!
   deleteUser: UserDeleteOutput!
-  authLogin(email: String!, password: String!): AuthLoginOutput!
   createComment(postId: ID!, input: CommentCreateInput!): CommentCreateOutput!
   updateComment(commentId: ID!, input: CommentUpdateInput!): CommentUpdateOutput!
   deleteComment(commentId: ID!): CommentDeleteOutput!
   likeComment(commentId: ID!): CommentLikeOutput!
   unlikeComment(commentId: ID!): CommentLikeOutput!
+  authLogin(email: String!, password: String!): AuthLoginOutput!
 }
 
 input PostCreateInput {

@@ -2,8 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 
 import { CommentService } from '../comment.service';
-import { CommentGetArgs } from '../dto/comment-get.dto';
 import { CommentQueriesResolver } from '../resolvers/comment.queries.resolver';
+import { CommentGetArgs } from '../dto/comment-get.dto';
+import { CommentPaginationArgs } from '../dto/comment-pagination.dto';
 import { commentMock } from '../../../test/mocks/comment.mock';
 
 describe('CommentQueriesResolver', () => {
@@ -12,6 +13,10 @@ describe('CommentQueriesResolver', () => {
 
   const commentServiceMock = {
     getById: jest.fn(() => commentMock),
+    pagination: jest.fn(() => ({
+      totalCount: 1,
+      nodes: [commentMock],
+    })),
   };
 
   beforeEach(async () => {
@@ -61,6 +66,25 @@ describe('CommentQueriesResolver', () => {
       }
 
       expect(commentServiceMock.getById).toBeCalledWith(args.id);
+    });
+  });
+
+  describe('Comment Pagination', () => {
+    it('should return pagination of comments', async () => {
+      const args: CommentPaginationArgs = {
+        skip: 0,
+        take: 10,
+      };
+
+      const result = await resolver.commentPagination(args);
+
+      expect(commentServiceMock.pagination).toBeCalledWith(args);
+
+      expect(result.totalCount).toEqual(expect.any(Number));
+      expect(result).toEqual({
+        totalCount: 1,
+        nodes: [commentMock],
+      });
     });
   });
 });
