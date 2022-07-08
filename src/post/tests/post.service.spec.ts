@@ -274,14 +274,6 @@ describe('PostService', () => {
       const userId = 'USERID';
       const postId = 'POSTID';
 
-      jest.spyOn(postRepository, 'findOne').mockReturnValueOnce(
-        new Promise((resolve) =>
-          resolve({
-            ...postMock,
-            likes: [],
-          }),
-        ),
-      );
       jest.spyOn(postRepository, 'save').mockReturnValueOnce(
         new Promise((resolve) =>
           resolve({
@@ -357,14 +349,6 @@ describe('PostService', () => {
       const userId = 'USERID';
       const postId = 'POSTID';
 
-      jest.spyOn(postRepository, 'findOne').mockReturnValueOnce(
-        new Promise((resolve) =>
-          resolve({
-            ...postMock,
-            likes: [],
-          }),
-        ),
-      );
       jest.spyOn(postRepository, 'save').mockReturnValueOnce(
         new Promise((resolve) =>
           resolve({

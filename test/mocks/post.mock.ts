@@ -8,7 +8,7 @@ export const postMock: Post = {
   description: null,
   author: null,
   authorId: 'USERID',
-  likes: null,
+  likes: [],
   likesIds: [],
   comments: [],
 };
