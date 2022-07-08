@@ -1,4 +1,12 @@
-import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
+import { ArgsType, Field, ID, InputType, ObjectType } from '@nestjs/graphql';
+import {
+  IsAlphanumeric,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
 import {
   Pagination,
@@ -7,6 +15,7 @@ import {
   SortDirection,
 } from '../../pagination/pagination.dto';
 import { Post } from '../entities/post.entity';
+import { User } from '../../user/entities/user.entity';
 
 @InputType()
 export class PostPaginationSortBy extends PaginationSortBy {
@@ -17,7 +26,19 @@ export class PostPaginationSortBy extends PaginationSortBy {
 @InputType()
 export class PostPaginationWhere {
   @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
   title?: Post['title'];
+
+  @Field(() => ID, { nullable: true })
+  @IsUUID()
+  @IsOptional()
+  authorId?: User['id'];
+
+  @Field(() => String, { nullable: true })
+  @IsAlphanumeric()
+  @IsOptional()
+  authorUsername?: User['username'];
 }
 
 @ArgsType()
@@ -26,6 +47,8 @@ export class PostPaginationArgs extends PaginationArgs {
   sortBy?: PostPaginationSortBy;
 
   @Field(() => PostPaginationWhere, { nullable: true })
+  @Type(() => PostPaginationWhere)
+  @ValidateNested()
   where?: PostPaginationWhere;
 }
 

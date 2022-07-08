@@ -29,15 +29,7 @@ describe('PostService', () => {
       affected: 1,
       raw: {},
     })),
-    createQueryBuilder: jest.fn(() => postQueryBuilderMock),
-  };
-
-  const postQueryBuilderMock = {
-    where: jest.fn(() => postQueryBuilderMock),
-    addOrderBy: jest.fn(() => postQueryBuilderMock),
-    skip: jest.fn(() => postQueryBuilderMock),
-    take: jest.fn(() => postQueryBuilderMock),
-    getManyAndCount: jest.fn(() => [[postMock], 1]),
+    findAndCount: jest.fn(() => [[postMock], 1]),
   };
 
   const userRepositoryMock = {
@@ -250,16 +242,14 @@ describe('PostService', () => {
 
       const result = await service.pagination(args);
 
-      expect(postRepositoryMock.createQueryBuilder).toBeCalledWith('post');
-
-      expect(postQueryBuilderMock.addOrderBy).toBeCalledTimes(1);
-      expect(postQueryBuilderMock.addOrderBy).toBeCalledWith(
-        'post.title',
-        'ASC',
-      );
-      expect(postQueryBuilderMock.skip).toBeCalledWith(args.skip);
-      expect(postQueryBuilderMock.take).toBeCalledWith(args.take);
-      expect(postQueryBuilderMock.getManyAndCount).toBeCalledTimes(1);
+      expect(postRepositoryMock.findAndCount).toBeCalledWith({
+        skip: args.skip,
+        take: args.take,
+        order: {
+          title: 'ASC',
+          createdAt: null,
+        },
+      });
 
       expect(result.totalCount).toEqual(expect.any(Number));
       expect(result).toEqual({

@@ -1,4 +1,11 @@
 import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+import {
+  IsAlpha,
+  IsAlphanumeric,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 
 import {
   Pagination,
@@ -23,12 +30,18 @@ export class UserPaginationSortBy extends PaginationSortBy {
 @InputType()
 export class UserPaginationWhere {
   @Field(() => String, { nullable: true })
+  @IsAlphanumeric()
+  @IsOptional()
   username?: User['username'];
 
   @Field(() => String, { nullable: true })
+  @IsAlpha()
+  @IsOptional()
   firstName?: User['firstName'];
 
   @Field(() => String, { nullable: true })
+  @IsAlpha()
+  @IsOptional()
   lastName?: User['lastName'];
 }
 
@@ -38,6 +51,8 @@ export class UserPaginationArgs extends PaginationArgs {
   sortBy?: UserPaginationSortBy;
 
   @Field(() => UserPaginationWhere, { nullable: true })
+  @Type(() => UserPaginationWhere)
+  @ValidateNested()
   where?: UserPaginationWhere;
 }
 

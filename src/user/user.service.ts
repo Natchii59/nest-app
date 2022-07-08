@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
 import { genSaltSync, hashSync } from 'bcrypt';
 
 import { User } from './entities/user.entity';
@@ -59,50 +59,63 @@ export class UserService {
   }
 
   async pagination(args: UserPaginationArgs): Promise<UserPagination> {
-    const query = this.userRepository.createQueryBuilder('user');
+    const options: FindManyOptions<User> = {
+      skip: args.skip,
+      take: args.take,
+    };
 
     if (args.where) {
-      if (args.where.username !== undefined)
-        query.where('LOWER(user.username) LIKE LOWER(:username)', {
-          username: `%${args.where.username.split('').join('%')}%`,
-        });
-      if (args.where.firstName !== undefined)
-        query.where('LOWER(user.firstName) LIKE LOWER(:firstName)', {
-          firstName: `%${args.where.firstName.split('').join('%')}%`,
-        });
-      if (args.where.lastName !== undefined)
-        query.where('LOWER(user.lastName) LIKE LOWER(:lastName)', {
-          lastName: `%${args.where.lastName.split('').join('%')}%`,
-        });
+      options.where = {
+        username:
+          args.where.username !== undefined
+            ? ILike(`%${args.where.username.split('').join('%')}%`)
+            : null,
+
+        firstName:
+          args.where.firstName !== undefined
+            ? ILike(`%${args.where.firstName.split('').join('%')}%`)
+            : null,
+
+        lastName:
+          args.where.lastName !== undefined
+            ? ILike(`%${args.where.lastName.split('').join('%')}%`)
+            : null,
+      };
     }
 
     if (args.sortBy) {
-      if (args.sortBy.createdAt !== undefined)
-        query.addOrderBy(
-          'user.createdAt',
-          args.sortBy.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
-        );
-      if (args.sortBy.username !== undefined)
-        query.addOrderBy(
-          'user.username',
-          args.sortBy.username === SortDirection.ASC ? 'ASC' : 'DESC',
-        );
-      if (args.sortBy.firstName !== undefined)
-        query.addOrderBy(
-          'user.firstName',
-          args.sortBy.firstName === SortDirection.ASC ? 'ASC' : 'DESC',
-        );
-      if (args.sortBy.lastName !== undefined)
-        query.addOrderBy(
-          'user.lastName',
-          args.sortBy.lastName === SortDirection.ASC ? 'ASC' : 'DESC',
-        );
+      options.order = {
+        createdAt:
+          args.sortBy.createdAt !== undefined
+            ? args.sortBy.createdAt === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+
+        username:
+          args.sortBy.username !== undefined
+            ? args.sortBy.username === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+
+        firstName:
+          args.sortBy.firstName !== undefined
+            ? args.sortBy.firstName === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+
+        lastName:
+          args.sortBy.lastName !== undefined
+            ? args.sortBy.lastName === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+      };
     }
 
-    query.skip(args.skip);
-    query.take(args.take);
-
-    const [nodes, totalCount] = await query.getManyAndCount();
+    const [nodes, totalCount] = await this.userRepository.findAndCount(options);
 
     return { nodes, totalCount };
   }

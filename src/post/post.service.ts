@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
 
 import { Post } from './entities/post.entity';
 import { PostCreateInput, PostCreateOuput } from './dto/post-create.dto';
@@ -74,32 +74,47 @@ export class PostService {
   }
 
   async pagination(args: PostPaginationArgs): Promise<PostPagination> {
-    const query = this.postRepository.createQueryBuilder('post');
+    const options: FindManyOptions<Post> = {
+      skip: args.skip,
+      take: args.take,
+    };
 
     if (args.where) {
-      if (args.where.title !== undefined)
-        query.where('LOWER(post.title) LIKE LOWER(:title)', {
-          title: `%${args.where.title.split('').join('%')}%`,
-        });
+      options.where = {
+        title:
+          args.where.title !== undefined
+            ? ILike(`%${args.where.title.split('').join('%')}%`)
+            : null,
+
+        author: {
+          id: args.where.authorId !== undefined ? args.where.authorId : null,
+
+          username: args.where.authorUsername
+            ? ILike(`%${args.where.authorUsername.split('').join('%')}%`)
+            : null,
+        },
+      };
     }
 
     if (args.sortBy) {
-      if (args.sortBy.createdAt !== undefined)
-        query.addOrderBy(
-          'post.createdAt',
-          args.sortBy.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
-        );
-      if (args.sortBy.title !== undefined)
-        query.addOrderBy(
-          'post.title',
-          args.sortBy.title === SortDirection.ASC ? 'ASC' : 'DESC',
-        );
+      options.order = {
+        createdAt:
+          args.sortBy.createdAt !== undefined
+            ? args.sortBy.createdAt === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+
+        title:
+          args.sortBy.title !== undefined
+            ? args.sortBy.title === SortDirection.ASC
+              ? 'ASC'
+              : 'DESC'
+            : null,
+      };
     }
 
-    query.skip(args.skip);
-    query.take(args.take);
-
-    const [nodes, totalCount] = await query.getManyAndCount();
+    const [nodes, totalCount] = await this.postRepository.findAndCount(options);
 
     return { nodes, totalCount };
   }

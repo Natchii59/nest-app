@@ -140,6 +140,8 @@ enum SortDirection {
 
 input PostPaginationWhere {
   title: String
+  authorId: ID
+  authorUsername: String
 }
 
 input UserPaginationSortBy {

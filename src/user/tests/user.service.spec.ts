@@ -26,15 +26,7 @@ describe('UserService', () => {
       affected: 1,
       raw: {},
     })),
-    createQueryBuilder: jest.fn(() => userQueryBuilderMock),
-  };
-
-  const userQueryBuilderMock = {
-    where: jest.fn(() => userQueryBuilderMock),
-    addOrderBy: jest.fn(() => userQueryBuilderMock),
-    skip: jest.fn(() => userQueryBuilderMock),
-    take: jest.fn(() => userQueryBuilderMock),
-    getManyAndCount: jest.fn(() => [[userMock], 1]),
+    findAndCount: jest.fn(() => [[userMock], 1]),
   };
 
   beforeEach(async () => {
@@ -218,17 +210,18 @@ describe('UserService', () => {
 
       const result = await service.pagination(args);
 
-      expect(userRepositoryMock.createQueryBuilder).toBeCalledWith('user');
+      expect(userRepositoryMock.findAndCount).toBeCalledWith({
+        skip: args.skip,
+        take: args.take,
+        order: {
+          username: 'ASC',
+          createdAt: null,
+          firstName: null,
+          lastName: null,
+        },
+      });
 
-      expect(userQueryBuilderMock.addOrderBy).toBeCalledWith(
-        'user.username',
-        'ASC',
-      );
-      expect(userQueryBuilderMock.skip).toBeCalledWith(args.skip);
-      expect(userQueryBuilderMock.take).toBeCalledWith(args.take);
-
-      expect(userQueryBuilderMock.getManyAndCount).toBeCalledTimes(1);
-
+      expect(result.totalCount).toEqual(expect.any(Number));
       expect(result).toEqual({
         nodes: [userMock],
         totalCount: 1,
